@@ -7,3 +7,12 @@ declare module "next-auth" {
 		} & DefaultSession["user"];
 	}
 }
+
+export type SceneData = {
+	label: string;
+	description: string;
+};
+
+export type SceneEdgeData = {
+	optionText: string;
+};
