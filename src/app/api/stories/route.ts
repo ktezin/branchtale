@@ -22,7 +22,7 @@ export async function GET(request: Request) {
 			throw new Error("Database connection failed");
 		}
 
-		const stories = await StoryModel.find({})
+		const stories = await StoryModel.find({});
 
 		if (!stories) {
 			return NextResponse.json(
@@ -42,32 +42,24 @@ export async function GET(request: Request) {
 
 export async function POST(request: NextRequest) {
 	const requestBody = await request.json();
-	const { title, scenes, startSceneId } = requestBody as {
-		title: string;
-		scenes: Scene[];
-		startSceneId: string;
-	};
+	const { title, scenes, startSceneId } = requestBody;
 
 	try {
 		const dbConnection = await connectToDatabase();
 		const db = dbConnection?.db;
 
-		if (!db) {
-			throw new Error("Database connection failed");
-		}
+		if (!db) throw new Error("Database connection failed");
 
-		const result = await db.collection("stories").insertOne({
+		const result = await StoryModel.create({
 			title,
 			scenes,
 			startSceneId,
-			createdAt: new Date(),
-			updatedAt: new Date(),
 		});
 
-		return NextResponse.json({ id: result.insertedId }, { status: 201 });
+		return NextResponse.json({ id: result._id }, { status: 201 });
 	} catch (error) {
 		return NextResponse.json(
-			{ error: "Internal Server Error" },
+			{ error: "Internal Server Error", details: error },
 			{ status: 500 }
 		);
 	}

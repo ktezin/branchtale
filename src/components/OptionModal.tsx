@@ -6,7 +6,7 @@ import {
 	DialogTitle,
 	Transition,
 } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 interface OptionModalProps {
 	isOpen: boolean;
@@ -22,6 +22,10 @@ export default function OptionModal({
 	onSave,
 }: OptionModalProps) {
 	const [text, setText] = useState(optionText);
+
+	useEffect(() => {
+		setText(optionText); // Modal her açıldığında güncelle
+	}, [optionText]);
 
 	const handleSave = () => {
 		onSave(text);

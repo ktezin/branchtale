@@ -1,59 +1,53 @@
-import { model, models, Schema } from "mongoose";
+import { Schema, model, models } from "mongoose";
 
-type Choice = {
-	text: string;
+export type Choice = {
+	optionText: string;
 	nextSceneId: string;
 };
 
-type Scene = {
+export type Scene = {
 	id: string;
-	text: string;
+	label: string;
+	description: string;
+	position: {
+		x: number;
+		y: number;
+	};
 	choices: Choice[];
 };
 
-const StorySchema = new Schema({
-	title: {
-		type: String,
-		required: true,
+const ChoiceSchema = new Schema<Choice>(
+	{
+		optionText: { type: String, required: true },
+		nextSceneId: { type: String, required: true },
 	},
-	startSceneId: {
-		type: String,
-		required: true,
-	},
-	scenes: [
-		{
-			id: {
-				type: String,
-				required: true,
-			},
-			text: {
-				type: String,
-				required: true,
-			},
-			choices: [
-				{
-					text: {
-						type: String,
-						required: true,
-					},
-					nextSceneId: {
-						type: String,
-						required: true,
-					},
-				},
-			],
+	{ _id: false }
+);
+
+const SceneSchema = new Schema<Scene>(
+	{
+		id: { type: String, required: true },
+		label: { type: String, required: true },
+		description: { type: String, required: true },
+		position: {
+			x: { type: Number, required: true },
+			y: { type: Number, required: true },
 		},
-	],
-	createdAt: {
-		type: Date,
-		required: true,
+		choices: { type: [ChoiceSchema], required: true },
 	},
-	updatedAt: {
-		type: Date,
-		required: true,
+	{ _id: false }
+);
+
+const StorySchema = new Schema(
+	{
+		title: { type: String, required: true },
+		startSceneId: { type: String, required: true },
+		scenes: { type: [SceneSchema], required: true },
 	},
-});
+	{
+		timestamps: true,
+	}
+);
 
 const StoryModel = models.Story || model("Story", StorySchema);
-
 export default StoryModel;

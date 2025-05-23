@@ -42,5 +42,4 @@ export default async function StoryPage({
 			</div>
 		</main>
 	);
-	return <div> </div>;
 }

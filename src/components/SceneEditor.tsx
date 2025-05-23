@@ -17,6 +17,7 @@ import {
 import "@xyflow/react/dist/style.css";
 import type { SceneData, SceneEdgeData } from "@/types";
 import OptionModal from "./OptionModal";
+import { saveStoryToDatabase, transformToScenes } from "@/lib/storyUtils";
 
 const initialEdges: Edge<SceneEdgeData>[] = [];
 
@@ -76,6 +77,25 @@ export default function SceneEditor() {
 		setNodes((nds) => [...nds, newNode]);
 	};
 
+	const handleSave = async () => {
+		const storyTitle = prompt("Hikaye başlığı girin:");
+		if (!storyTitle) return;
+
+		const scenes = transformToScenes(nodes, edges);
+		const startSceneId = nodes[0]?.id; // İstersen daha sonra kullanıcıdan seçmesini isteyebilirsin.
+
+		try {
+			const storyId = await saveStoryToDatabase(
+				storyTitle,
+				startSceneId,
+				scenes
+			);
+			alert(`Hikaye başarıyla kaydedildi! ID: ${storyId}`);
+		} catch (err) {
+			alert("Kayıt sırasında bir hata oluştu." + err);
+		}
+	};
+
 	return (
 		<div style={{ width: "100%", height: "90vh" }}>
 			<button
@@ -84,6 +104,13 @@ export default function SceneEditor() {
 			>
 				Yeni Sahne Ekle
 			</button>
+			<button
+				onClick={handleSave}
+				className="absolute z-10 p-2 m-2 top-28 bg-green-500 text-white rounded"
+			>
+				Hikayeyi Kaydet
+			</button>
+
 			<ReactFlow
 				nodes={nodes}
 				edges={edges}
