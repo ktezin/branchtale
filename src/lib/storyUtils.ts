@@ -1,5 +1,3 @@
-// src/lib/storyUtils.ts
-
 import { SceneData, SceneEdgeData } from "@/types";
 import { Node, Edge } from "@xyflow/react";
 
@@ -18,6 +16,36 @@ export type Scene = {
 	};
 	choices: Choice[];
 };
+
+export function transformFromScenes(scenes: Scene[]): {
+	nodes: Node<SceneData>[];
+	edges: Edge<SceneEdgeData>[];
+} {
+	const nodes: Node<SceneData>[] = scenes.map((scene) => ({
+		id: scene.id,
+		type: "default",
+		position: scene.position,
+		data: {
+			label: scene.label,
+			description: scene.description,
+		},
+	}));
+
+	const edges: Edge<SceneEdgeData>[] = scenes.flatMap((scene) =>
+		scene.choices.map((choice) => ({
+			id: `edge-${scene.id}-${choice.nextSceneId}`,
+			source: scene.id,
+			target: choice.nextSceneId,
+			label: choice.optionText,
+			type: "default",
+			data: {
+				optionText: choice.optionText,
+			},
+		}))
+	);
+
+	return { nodes, edges };
+}
 
 export function transformToScenes(nodes: Node[], edges: Edge[]): Scene[] {
 	return nodes.map((node) => {
@@ -44,11 +72,15 @@ export function transformToScenes(nodes: Node[], edges: Edge[]): Scene[] {
 export async function saveStoryToDatabase(
 	title: string,
 	startSceneId: string,
-	scenes: Scene[]
+	scenes: Scene[],
+	storyId?: string
 ) {
 	try {
-		const response = await fetch("/api/stories", {
-			method: "POST",
+		const method = storyId ? "PUT" : "POST";
+		const url = storyId ? `/api/stories/${storyId}` : "/api/stories";
+
+		const response = await fetch(url, {
+			method,
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ title, startSceneId, scenes }),
 		});

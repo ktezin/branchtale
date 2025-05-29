@@ -18,16 +18,27 @@ import "@xyflow/react/dist/style.css";
 import type { SceneData, SceneEdgeData } from "@/types";
 import OptionModal from "./OptionModal";
 import { saveStoryToDatabase, transformToScenes } from "@/lib/storyUtils";
+import { useParams, useRouter } from "next/navigation";
 
-const initialEdges: Edge<SceneEdgeData>[] = [];
+type SceneEditorProps = {
+	initialNodes?: Node[];
+	initialEdges?: Edge[];
+};
 
-export default function SceneEditor() {
-	const [nodes, setNodes, onNodesChange] = useNodesState<Node<SceneData>>([]);
+export default function SceneEditor({
+	initialNodes = [],
+	initialEdges = [],
+}: SceneEditorProps) {
+	const params = useParams();
+	const router = useRouter();
+	const storyId = params?.id as string | undefined;
+
+	const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+	const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+
 	const [selectedNode, setSelectedNode] = useState<Node | null>(null);
 	const [modalOpen, setModalOpen] = useState(false);
 
-	const [edges, setEdges, onEdgesChange] =
-		useEdgesState<Edge<SceneEdgeData>>(initialEdges);
 	const [selectedEdge, setSelectedEdge] = useState<Edge<SceneEdgeData> | null>(
 		null
 	);
@@ -82,15 +93,16 @@ export default function SceneEditor() {
 		if (!storyTitle) return;
 
 		const scenes = transformToScenes(nodes, edges);
-		const startSceneId = nodes[0]?.id; // İstersen daha sonra kullanıcıdan seçmesini isteyebilirsin.
+		const startSceneId = nodes[0]?.id;
 
 		try {
-			const storyId = await saveStoryToDatabase(
+			const savedId = await saveStoryToDatabase(
 				storyTitle,
 				startSceneId,
-				scenes
+				scenes,
+				storyId
 			);
-			alert(`Hikaye başarıyla kaydedildi! ID: ${storyId}`);
+			alert(`Hikaye başarıyla kaydedildi! ID: ${savedId}`);
 		} catch (err) {
 			alert("Kayıt sırasında bir hata oluştu." + err);
 		}

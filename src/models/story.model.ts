@@ -16,6 +16,15 @@ export type Scene = {
 	choices: Choice[];
 };
 
+export type Story = {
+	title: string;
+	startSceneId: string;
+	scenes: Scene[];
+	createdAt: Date;
+	updatedAt: Date;
+
+};
+
 const ChoiceSchema = new Schema<Choice>(
 	{
 		optionText: { type: String, required: true },
