@@ -18,7 +18,7 @@ interface Story {
 export default async function StoryPage({
 	params,
 }: {
-	params: Promise<{ id: string }>; // Yeni kural
+	params: Promise<{ id: string }>;
 }) {
 	const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stories`);
 

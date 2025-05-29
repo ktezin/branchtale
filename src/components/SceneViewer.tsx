@@ -2,15 +2,7 @@
 
 import { useState } from "react";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
-
-type Scene = {
-	id: string;
-	text: string;
-	choices?: Array<{
-		text: string;
-		nextSceneId: string;
-	}>;
-};
+import type { Scene } from "@/models/story.model";
 
 type SceneViewerProps = {
 	scenes: Scene[];
@@ -24,16 +16,13 @@ export default function SceneViewer({
 	const [currentSceneId, setCurrentSceneId] = useState(initialSceneId);
 	const [history, setHistory] = useState<string[]>([]);
 
-	// Mevcut sahneyi bul
 	const currentScene = scenes.find((scene) => scene.id === currentSceneId);
 
-	// Seçim yapıldığında
 	const handleChoice = (nextSceneId: string) => {
 		setHistory((prev) => [...prev, currentSceneId]);
 		setCurrentSceneId(nextSceneId);
 	};
 
-	// Önceki sahneye dön
 	const goBack = () => {
 		if (history.length > 0) {
 			const previousSceneId = history[history.length - 1];
@@ -52,13 +41,11 @@ export default function SceneViewer({
 
 	return (
 		<div className="space-y-6">
-			{/* Sahne Metni */}
 			<div className="p-6 bg-white rounded-lg shadow">
-				<p className="whitespace-pre-line">{currentScene.text}</p>
+				<p className="whitespace-pre-line">{currentScene.description}</p>
 			</div>
 
-			{/* Seçenekler */}
-			{currentScene.choices && currentScene.choices.length > 0 ? (
+			{currentScene.choices.length > 0 ? (
 				<div className="space-y-3">
 					<h3 className="font-medium">Seçiminiz:</h3>
 					{currentScene.choices.map((choice, index) => (
@@ -67,7 +54,7 @@ export default function SceneViewer({
 							onClick={() => handleChoice(choice.nextSceneId)}
 							className="w-full p-4 text-left bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
 						>
-							{choice.text}
+							{choice.optionText}
 						</button>
 					))}
 				</div>
@@ -77,7 +64,6 @@ export default function SceneViewer({
 				</div>
 			)}
 
-			{/* Geri Butonu */}
 			{history.length > 0 && (
 				<button
 					onClick={goBack}

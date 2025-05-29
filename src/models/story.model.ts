@@ -17,6 +17,7 @@ export type Scene = {
 };
 
 export type Story = {
+	_id: string;
 	title: string;
 	startSceneId: string;
 	scenes: Scene[];

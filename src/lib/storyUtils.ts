@@ -1,3 +1,4 @@
+import { Story } from "@/models/story.model";
 import { SceneData, SceneEdgeData } from "@/types";
 import { Node, Edge } from "@xyflow/react";
 
@@ -67,6 +68,29 @@ export function transformToScenes(nodes: Node[], edges: Edge[]): Scene[] {
 			choices: nodeChoices,
 		};
 	});
+}
+
+export function transformToStory(rawStory: any) {
+	const scenes: Scene[] = rawStory.scenes.map((scene: any, index: number) => ({
+		id: scene.id,
+		label: scene.label ?? `Sahne ${index + 1}`,
+		description: scene.description ?? scene.text ?? "",
+		position: scene.position ?? { x: 0, y: 0 },
+		choices: (scene.choices ?? []).map((choice: any) => ({
+			optionText: choice.optionText ?? choice.text,
+			nextSceneId: choice.nextSceneId,
+		})),
+	}));
+
+	const story: Story = {
+		title: rawStory.title,
+		startSceneId: rawStory.startSceneId,
+		scenes,
+		createdAt: rawStory.createdAt,
+		updatedAt: rawStory.updatedAt,
+	};
+
+	return story;
 }
 
 export async function saveStoryToDatabase(
