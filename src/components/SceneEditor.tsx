@@ -110,18 +110,20 @@ export default function SceneEditor({
 
 	return (
 		<div style={{ width: "100%", height: "90vh" }}>
-			<button
-				onClick={addNode}
-				className="absolute z-10 p-2 m-2 bg-blue-500 text-white rounded"
-			>
-				Yeni Sahne Ekle
-			</button>
-			<button
-				onClick={handleSave}
-				className="absolute z-10 p-2 m-2 top-28 bg-green-500 text-white rounded"
-			>
-				Hikayeyi Kaydet
-			</button>
+			<div className="absolute z-10 flex flex-col">
+				<button
+					onClick={addNode}
+					className="p-2 m-2 bg-blue-500 text-white rounded"
+				>
+					Yeni Sahne Ekle
+				</button>
+				<button
+					onClick={handleSave}
+					className="p-2 m-2 bg-green-500 text-white rounded"
+				>
+					Hikayeyi Kaydet
+				</button>
+			</div>
 
 			<ReactFlow
 				nodes={nodes}

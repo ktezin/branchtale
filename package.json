@@ -9,10 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth/mongodb-adapter": "^3.9.1",
     "@headlessui/react": "^2.2.4",
     "@heroicons/react": "^2.2.0",
     "@xyflow/react": "^12.6.4",
+    "bcryptjs": "^3.0.2",
     "bson": "^6.10.3",
+    "framer-motion": "^12.15.0",
     "mongodb": "^6.16.0",
     "mongoose": "^8.14.2",
     "next": "15.3.2",
