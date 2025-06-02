@@ -1,6 +1,8 @@
 import { connectToDatabase } from "@/lib/mongodb";
 import StoryModel from "@/models/story.model";
 import { NextRequest, NextResponse } from "next/server";
+import { authOptions } from "../auth/[...nextauth]/route";
+import { getServerSession } from "next-auth";
 
 type Choice = {
 	text: string;
@@ -50,10 +52,16 @@ export async function POST(request: NextRequest) {
 
 		if (!db) throw new Error("Database connection failed");
 
+		const session = await getServerSession(authOptions);
+		if (!session) {
+			return NextResponse.json({ error: "Yetkisiz" }, { status: 401 });
+		}
+
 		const result = await StoryModel.create({
 			title,
 			scenes,
 			startSceneId,
+			createdBy: session.user.id,
 		});
 
 		return NextResponse.json({ id: result._id }, { status: 201 });

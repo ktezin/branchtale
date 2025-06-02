@@ -21,9 +21,9 @@ export type Story = {
 	title: string;
 	startSceneId: string;
 	scenes: Scene[];
+	createdBy: Schema.Types.ObjectId | string;
 	createdAt: Date;
 	updatedAt: Date;
-
 };
 
 const ChoiceSchema = new Schema<Choice>(
@@ -53,6 +53,7 @@ const StorySchema = new Schema(
 		title: { type: String, required: true },
 		startSceneId: { type: String, required: true },
 		scenes: { type: [SceneSchema], required: true },
+		createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
 	},
 	{
 		timestamps: true,

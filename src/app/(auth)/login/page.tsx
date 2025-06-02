@@ -22,6 +22,7 @@ export default function LoginPage() {
 			setError("Giriş başarısız: " + res.error);
 		} else {
 			router.push("/");
+            router.refresh();
 		}
 	};
 

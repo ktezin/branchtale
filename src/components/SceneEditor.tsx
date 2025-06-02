@@ -30,7 +30,6 @@ export default function SceneEditor({
 	initialEdges = [],
 }: SceneEditorProps) {
 	const params = useParams();
-	const router = useRouter();
 	const storyId = params?.id as string | undefined;
 
 	const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);

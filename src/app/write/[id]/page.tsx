@@ -1,47 +1,32 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import SceneEditor from "@/components/SceneEditor";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { redirect } from "next/navigation";
+import StoryModel, { Story } from "@/models/story.model";
 import { transformFromScenes } from "@/lib/storyUtils";
-import { Node, Edge } from "@xyflow/react";
-import { Story } from "@/models/story.model";
+import WriteClient from "./WriteClient";
 
-export default function WritePage() {
-	const { id } = useParams();
-	const [story, setStory] = useState<Story>();
-	const [nodes, setNodes] = useState<Node[]>([]);
-	const [edges, setEdges] = useState<Edge[]>([]);
-	const [loading, setLoading] = useState(true);
+export default async function WritePage({
+	params,
+}: {
+	params: { id: string };
+}) {
+	const session = await getServerSession(authOptions);
+	if (!session) redirect("/login");
 
-	useEffect(() => {
-		const fetchStory = async () => {
-			try {
-				const res = await fetch(`/api/stories/${id}`);
-				const data = await res.json();
+	const story = await StoryModel.findOne({
+		_id: params.id,
+		createdBy: session.user.id,
+	});
 
-				if (!res.ok) throw new Error(data.error || "Hikaye yüklenemedi");
+	if (!story) redirect("/");
 
-				setStory(data);
-
-				const { nodes, edges } = transformFromScenes(data.scenes);
-				setNodes(nodes);
-				setEdges(edges);
-				setLoading(false);
-			} catch (error) {
-				console.error("Yükleme hatası:", error);
-			}
-		};
-
-		if (id) fetchStory();
-	}, [id]);
-
-	if (loading) return <div>Yükleniyor...</div>;
+	const { nodes, edges } = transformFromScenes(story.scenes);
 
 	return (
-		<main className="p-4">
-			<h1 className="text-2xl font-bold mb-4">{story ? story.title : "Hikaye Başlığı"}</h1>
-			<SceneEditor initialNodes={nodes} initialEdges={edges} />
-		</main>
+		<WriteClient
+			title={story.title}
+			initialNodes={nodes}
+			initialEdges={edges}
+		/>
 	);
 }
