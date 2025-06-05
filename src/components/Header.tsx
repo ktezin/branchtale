@@ -18,7 +18,7 @@ export default async function Header() {
 	];
 
 	return (
-		<header className="flex justify-between items-center w-full p-2 px-[30vw] shadow">
+		<header className="flex justify-between items-center w-full p-2 px-[30vw] shadow dark:shadow-lg dark:shadow-white/5 dark:bg-black dark:border">
 			<Link href="/" className="font-bold text-2xl">
 				BranchTale
 			</Link>
@@ -27,7 +27,7 @@ export default async function Header() {
 					<Link
 						key={link.href}
 						href={link.href}
-						className="p-2 rounded-lg hover:shadow"
+						className="p-2 rounded-lg hover:shadow dark:hover:border"
 					>
 						{link.text}
 					</Link>

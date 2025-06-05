@@ -9,8 +9,8 @@ function NotFoundPage() {
 	return (
 		<div className="w-full h-[80vh] flex flex-col items-center justify-center  text-center">
 			<h1 className="font-bold text-7xl text-shadow-lg/30 my-4">404</h1>
-			<h2 className="font-bold text-2xl text-gray-800">Sayfa bulunamadı</h2>
-			<p className=" text-gray-800">
+			<h2 className="font-bold text-2xl text-gray-800 dark:text-gray-200">Sayfa bulunamadı</h2>
+			<p className=" text-gray-800 dark:text-gray-300">
 				Aramaya çalıştığınız sayfa mevcut değil ya da henüz geliştirilmemiş olabilir.
 			</p>
 			<div className="flex my-4">

@@ -27,7 +27,7 @@ export default function LoginPage() {
 	};
 
 	return (
-		<div className="max-w-md mx-auto mt-20 p-6 shadow rounded-lg">
+		<div className="max-w-md mx-auto mt-20 p-6 shadow dark:bg-neutral-900 rounded-lg">
 			<h1 className="text-2xl font-bold mb-4">Giriş Yap</h1>
 			<form onSubmit={handleSubmit} className="space-y-4">
 				<input

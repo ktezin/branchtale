@@ -44,7 +44,7 @@ export async function GET(request: Request) {
 
 export async function POST(request: NextRequest) {
 	const requestBody = await request.json();
-	const { title, scenes, startSceneId } = requestBody;
+	const { title, description, scenes, startSceneId } = requestBody;
 
 	try {
 		const dbConnection = await connectToDatabase();
@@ -59,6 +59,7 @@ export async function POST(request: NextRequest) {
 
 		const result = await StoryModel.create({
 			title,
+			description,
 			scenes,
 			startSceneId,
 			createdBy: session.user.id,

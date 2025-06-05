@@ -53,7 +53,7 @@ export default function SceneViewer({
 				transition={{ duration: 0.3 }}
 			>
 				<div className="space-y-6">
-					<div className="p-6 bg-white rounded-lg shadow">
+					<div className="p-6 dark:bg-neutral-900 rounded-lg shadow">
 						<p className="whitespace-pre-line">{currentScene.description}</p>
 					</div>
 
@@ -64,7 +64,7 @@ export default function SceneViewer({
 								<button
 									key={index}
 									onClick={() => handleChoice(choice.nextSceneId)}
-									className="w-full p-4 text-left bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
+									className="w-full p-4 text-left bg-gray-50 hover:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-950 dark:hover:border dark:text-white dark:hover:text-white text-black rounded-lg transition-colors"
 								>
 									{choice.optionText}
 								</button>

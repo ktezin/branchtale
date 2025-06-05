@@ -19,6 +19,7 @@ export type Scene = {
 export type Story = {
 	_id: string;
 	title: string;
+	description: string;
 	startSceneId: string;
 	scenes: Scene[];
 	createdBy: Schema.Types.ObjectId | string;
@@ -51,6 +52,7 @@ const SceneSchema = new Schema<Scene>(
 const StorySchema = new Schema(
 	{
 		title: { type: String, required: true },
+		description: { type: String, required: true },
 		startSceneId: { type: String, required: true },
 		scenes: { type: [SceneSchema], required: true },
 		createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },

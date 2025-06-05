@@ -24,7 +24,9 @@ export default async function WritePage({
 
 	return (
 		<WriteClient
-			title={story.title}
+			storyId={story._id}
+			storyTitle={story.title}
+			storyDescription={story.description}
 			initialNodes={nodes}
 			initialEdges={edges}
 		/>

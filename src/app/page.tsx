@@ -1,3 +1,4 @@
+import HorizontalScroll from "@/components/HorizontalScroll";
 import StoryCard from "@/components/StoryCard";
 import { Story } from "@/models/story.model";
 import { StoryWithAuthor } from "@/types";
@@ -23,10 +24,11 @@ export default async function Home() {
 	return (
 		<div className="mx-[20vw] py-8 flex flex-col gap-6">
 			<div className="flex flex-col gap-2">
-				<h3 className="font-bold text-2xl text-gray-900">
+				<h3 className="font-bold text-2xl text-gray-900 dark:text-gray-200">
 					Son Yazılan Hikayeler
 				</h3>
-				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+
+				<HorizontalScroll>
 					{lastCreated.map((story) => (
 						<StoryCard
 							key={story._id}
@@ -35,22 +37,22 @@ export default async function Home() {
 							createdBy={story.createdBy.username}
 						/>
 					))}
-				</div>
+				</HorizontalScroll>
 			</div>
 			<div className="flex flex-col gap-2">
-				<h3 className="font-bold text-2xl text-gray-900">
+				<h3 className="font-bold text-2xl text-gray-900 dark:text-gray-200">
 					Son Güncellenen Hikayeler
 				</h3>
-				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+				<HorizontalScroll>
 					{lastUpdated.map((story) => (
 						<StoryCard
 							key={story._id}
 							id={story._id}
 							title={story.title}
-							createdBy={story.createdBy.toString()}
+							createdBy={story.createdBy.username}
 						/>
 					))}
-				</div>
+				</HorizontalScroll>
 			</div>
 		</div>
 	);

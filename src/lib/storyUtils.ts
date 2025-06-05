@@ -85,6 +85,7 @@ export function transformToStory(rawStory: any) {
 	const story: Story = {
 		_id: rawStory._id,
 		title: rawStory.title,
+		description: rawStory.description,
 		startSceneId: rawStory.startSceneId,
 		scenes,
 		createdBy: rawStory.createdBy,
@@ -97,6 +98,7 @@ export function transformToStory(rawStory: any) {
 
 export async function saveStoryToDatabase(
 	title: string,
+	description: string,
 	startSceneId: string,
 	scenes: Scene[],
 	storyId?: string
@@ -108,7 +110,7 @@ export async function saveStoryToDatabase(
 		const response = await fetch(url, {
 			method,
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ title, startSceneId, scenes }),
+			body: JSON.stringify({ title, description, startSceneId, scenes }),
 		});
 
 		if (!response.ok) {

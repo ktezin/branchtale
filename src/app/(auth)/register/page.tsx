@@ -44,7 +44,7 @@ export default function RegisterPage() {
 					placeholder="Kullanıcı adı"
 					value={form.username}
 					onChange={handleChange}
-					className="w-full p-2 border rounded"
+					className="w-full p-2 border rounded bg-white text-black"
 					required
 				/>
 				<input
@@ -53,7 +53,7 @@ export default function RegisterPage() {
 					placeholder="Email"
 					value={form.email}
 					onChange={handleChange}
-					className="w-full p-2 border rounded"
+					className="w-full p-2 border rounded bg-white text-black"
 					required
 				/>
 				<input
@@ -62,7 +62,7 @@ export default function RegisterPage() {
 					placeholder="Şifre"
 					value={form.password}
 					onChange={handleChange}
-					className="w-full p-2 border rounded"
+					className="w-full p-2 border rounded bg-white text-black"
 					required
 				/>
 				{error && <p className="text-red-500 text-sm">{error}</p>}

@@ -20,18 +20,23 @@ import OptionModal from "./OptionModal";
 import { saveStoryToDatabase, transformToScenes } from "@/lib/storyUtils";
 import { useParams, useRouter } from "next/navigation";
 
-type SceneEditorProps = {
+export type SceneEditorProps = {
 	initialNodes?: Node[];
 	initialEdges?: Edge[];
+	storyId?: string;
+	storyTitle?: string;
+	storyDescription?: string;
 };
 
 export default function SceneEditor({
 	initialNodes = [],
 	initialEdges = [],
+	storyId,
+	storyTitle,
+	storyDescription,
 }: SceneEditorProps) {
 	const router = useRouter();
 	const params = useParams();
-	const storyId = params?.id as string | undefined;
 
 	const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
 	const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -89,15 +94,19 @@ export default function SceneEditor({
 	};
 
 	const handleSave = async () => {
-		const storyTitle = prompt("Hikaye başlığı girin:");
-		if (!storyTitle) return;
+		const promptTitle = prompt("Hikaye başlığı girin:", storyTitle);
+		if (!promptTitle) return;
+
+		const promptDescription = prompt("Hikaye açıklaması girin:", storyDescription);
+		if (!promptDescription) return;
 
 		const scenes = transformToScenes(nodes, edges);
 		const startSceneId = nodes[0]?.id;
 
 		try {
 			const savedId = await saveStoryToDatabase(
-				storyTitle,
+				promptTitle,
+				promptDescription,
 				startSceneId,
 				scenes,
 				storyId
