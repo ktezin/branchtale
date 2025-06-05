@@ -24,7 +24,7 @@ export async function GET(request: Request) {
 			throw new Error("Database connection failed");
 		}
 
-		const stories = await StoryModel.find({});
+		const stories = await StoryModel.find({}).populate("createdBy", "username");
 
 		if (!stories) {
 			return NextResponse.json(

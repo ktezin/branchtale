@@ -1,5 +1,6 @@
 import StoryCard from "@/components/StoryCard";
 import { Story } from "@/models/story.model";
+import { StoryWithAuthor } from "@/types";
 import { notFound } from "next/navigation";
 
 export default async function Home() {
@@ -9,7 +10,7 @@ export default async function Home() {
 
 	if (!lastRes.ok) return notFound();
 
-	const lastCreated: Story[] = await lastRes.json();
+	const lastCreated: StoryWithAuthor[] = await lastRes.json();
 
 	const updatedRes = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/api/stories?sort=updatedBy&limit=10`
@@ -17,7 +18,7 @@ export default async function Home() {
 
 	if (!updatedRes.ok) return notFound();
 
-	const lastUpdated: Story[] = await updatedRes.json();
+	const lastUpdated: StoryWithAuthor[] = await updatedRes.json();
 
 	return (
 		<div className="mx-[20vw] py-8 flex flex-col gap-6">
@@ -25,9 +26,14 @@ export default async function Home() {
 				<h3 className="font-bold text-2xl text-gray-900">
 					Son Yazılan Hikayeler
 				</h3>
-				<div className="flex gap-4">
+				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
 					{lastCreated.map((story) => (
-						<StoryCard key={story._id} id={story._id} title={story.title} />
+						<StoryCard
+							key={story._id}
+							id={story._id}
+							title={story.title}
+							createdBy={story.createdBy.username}
+						/>
 					))}
 				</div>
 			</div>
@@ -35,9 +41,14 @@ export default async function Home() {
 				<h3 className="font-bold text-2xl text-gray-900">
 					Son Güncellenen Hikayeler
 				</h3>
-				<div className="flex gap-4">
+				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
 					{lastUpdated.map((story) => (
-						<StoryCard key={story._id} id={story._id} title={story.title} />
+						<StoryCard
+							key={story._id}
+							id={story._id}
+							title={story.title}
+							createdBy={story.createdBy.toString()}
+						/>
 					))}
 				</div>
 			</div>

@@ -29,6 +29,7 @@ export default function SceneEditor({
 	initialNodes = [],
 	initialEdges = [],
 }: SceneEditorProps) {
+	const router = useRouter();
 	const params = useParams();
 	const storyId = params?.id as string | undefined;
 
@@ -101,7 +102,13 @@ export default function SceneEditor({
 				scenes,
 				storyId
 			);
+
 			alert(`Hikaye başarıyla kaydedildi! ID: ${savedId}`);
+
+			if (!storyId) {
+				router.push("/stories/" + savedId);
+			}
+			router.refresh();
 		} catch (err) {
 			alert("Kayıt sırasında bir hata oluştu." + err);
 		}

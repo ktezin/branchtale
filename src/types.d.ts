@@ -1,4 +1,5 @@
 import NextAuth from "next-auth";
+import { Story } from "@/models/story.model";
 
 declare module "next-auth" {
 	interface Session {
@@ -18,4 +19,11 @@ export type SceneData = {
 
 export type SceneEdgeData = {
 	optionText: string;
+};
+
+export type StoryWithAuthor = Story & {
+	createdBy: {
+		_id: string;
+		username: string;
+	};
 };

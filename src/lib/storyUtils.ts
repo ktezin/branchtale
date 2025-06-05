@@ -83,9 +83,11 @@ export function transformToStory(rawStory: any) {
 	}));
 
 	const story: Story = {
+		_id: rawStory._id,
 		title: rawStory.title,
 		startSceneId: rawStory.startSceneId,
 		scenes,
+		createdBy: rawStory.createdBy,
 		createdAt: rawStory.createdAt,
 		updatedAt: rawStory.updatedAt,
 	};
