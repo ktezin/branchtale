@@ -18,11 +18,27 @@ export default async function Header() {
 	];
 
 	return (
-		<header className="flex justify-between items-center w-full p-2 px-[30vw] shadow dark:shadow-lg dark:shadow-white/5 dark:bg-black dark:border">
-			<Link href="/" className="font-bold text-2xl">
+		<header
+			className="
+		px-[10vw] 
+		flex 
+		justify-center 
+		md:justify-between 
+		items-center 
+		w-full
+		p-4 
+		md:px-[15vw] 
+		lg:px-[20vw] 
+		shadow 
+		dark:shadow-lg 
+		dark:shadow-white/5 
+		dark:bg-black 
+		dark:border"
+		>
+			<Link href="/" className="font-bold text-2xl text-center">
 				BranchTale
 			</Link>
-			<div className="flex items-center gap-1">
+			<div className="hidden md:flex items-center gap-1">
 				{links.map((link) => (
 					<Link
 						key={link.href}

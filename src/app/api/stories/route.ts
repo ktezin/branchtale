@@ -15,26 +15,64 @@ type Scene = {
 	choices: Choice[];
 };
 
-export async function GET(request: Request) {
+export async function GET(req: NextRequest) {
 	try {
-		const dbConnection = await connectToDatabase();
-		const db = dbConnection?.db;
+		await connectToDatabase();
 
-		if (!db) {
-			throw new Error("Database connection failed");
+		const { searchParams } = new URL(req.url);
+
+		const sort = searchParams.get("sort") || "createdAt"; // createdAt, updatedAt, title, etc.
+		const order = searchParams.get("order") === "asc" ? 1 : -1;
+		const limit = parseInt(searchParams.get("limit") || "10");
+		const page = parseInt(searchParams.get("page") || "1");
+		const title = searchParams.get("title")?.toLowerCase();
+		const username = searchParams.get("username");
+		const category = searchParams.get("category");
+
+		const filter: any = {};
+
+		if (title) {
+			filter.title = { $regex: title, $options: "i" };
 		}
 
-		const stories = await StoryModel.find({}).populate("createdBy", "username");
-
-		if (!stories) {
-			return NextResponse.json(
-				{ error: "Henüz bir hikaye mevcut değil" },
-				{ status: 404 }
-			);
+		if (category) {
+			filter.category = category;
+		}
+		if (username) {
+			const user = await (
+				await import("@/models/user.model")
+			).default.findOne({
+				username: username,
+			});
+			if (user) {
+				filter.createdBy = user._id;
+			} else {
+				return NextResponse.json([], { status: 200 });
+			}
 		}
 
-		return NextResponse.json(stories, { status: 201 });
+		const stories = await StoryModel.find(filter)
+			.sort({ [sort]: order })
+			.skip((page - 1) * limit)
+			.limit(limit)
+			.populate("createdBy", "username");
+
+		const totalCount = await StoryModel.countDocuments(filter);
+
+		return NextResponse.json(
+			{
+				stories,
+				pagination: {
+					total: totalCount,
+					page,
+					limit,
+					totalPages: Math.ceil(totalCount / limit),
+				},
+			},
+			{ status: 200 }
+		);
 	} catch (error) {
+		console.error(error);
 		return NextResponse.json(
 			{ error: "Sunucu hatası: " + error },
 			{ status: 500 }

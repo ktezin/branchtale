@@ -24,7 +24,7 @@ export function transformFromScenes(scenes: Scene[]): {
 } {
 	const nodes: Node<SceneData>[] = scenes.map((scene) => ({
 		id: scene.id,
-		type: "default",
+		type: "custom",
 		position: scene.position,
 		data: {
 			label: scene.label,
@@ -41,6 +41,10 @@ export function transformFromScenes(scenes: Scene[]): {
 			type: "default",
 			data: {
 				optionText: choice.optionText,
+			},
+			style: {
+				stroke: "#4ade80",
+				strokeWidth: 2,
 			},
 		}))
 	);

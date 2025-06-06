@@ -12,10 +12,10 @@ declare module "next-auth" {
 	}
 }
 
-export type SceneData = {
+export type SceneData = Node<{
 	label: string;
 	description: string;
-};
+}>;
 
 export type SceneEdgeData = {
 	optionText: string;
@@ -27,3 +27,13 @@ export type StoryWithAuthor = Story & {
 		username: string;
 	};
 };
+
+export interface StoryListResponse {
+	stories: StoryWithAuthor[];
+	pagination: {
+		total: number;
+		page: number;
+		limit: number;
+		totalPages: number;
+	};
+}

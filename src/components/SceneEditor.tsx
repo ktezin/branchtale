@@ -19,6 +19,7 @@ import type { SceneData, SceneEdgeData } from "@/types";
 import OptionModal from "./OptionModal";
 import { saveStoryToDatabase, transformToScenes } from "@/lib/storyUtils";
 import { useParams, useRouter } from "next/navigation";
+import CustomNode from "./CustomNode";
 
 export type SceneEditorProps = {
 	initialNodes?: Node[];
@@ -59,6 +60,8 @@ export default function SceneEditor({
 				data: {
 					optionText: "Yeni Seçenek",
 				},
+				className:
+					"rounded-md bg-neutral-900 hover:bg-neutral-950 text-white border border-white p-2 shadow",
 			};
 
 			setEdges((eds) => addEdge(newEdge, eds));
@@ -77,9 +80,9 @@ export default function SceneEditor({
 	};
 
 	const addNode = () => {
-		const newNode: Node<SceneData> = {
+		const newNode: SceneData = {
 			id: crypto.randomUUID(),
-			type: "default",
+			type: "custom",
 			position: {
 				x: Math.random() * 600,
 				y: Math.random() * 400,
@@ -97,7 +100,10 @@ export default function SceneEditor({
 		const promptTitle = prompt("Hikaye başlığı girin:", storyTitle);
 		if (!promptTitle) return;
 
-		const promptDescription = prompt("Hikaye açıklaması girin:", storyDescription);
+		const promptDescription = prompt(
+			"Hikaye açıklaması girin:",
+			storyDescription
+		);
 		if (!promptDescription) return;
 
 		const scenes = transformToScenes(nodes, edges);
@@ -148,6 +154,7 @@ export default function SceneEditor({
 				onConnect={onConnect}
 				onNodeClick={onNodeClick}
 				onEdgeClick={onEdgeClick}
+				nodeTypes={{ custom: CustomNode }}
 				fitView
 			>
 				<MiniMap />

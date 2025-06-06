@@ -1,35 +1,34 @@
 import HorizontalScroll from "@/components/HorizontalScroll";
 import StoryCard from "@/components/StoryCard";
-import { Story } from "@/models/story.model";
-import { StoryWithAuthor } from "@/types";
+import { StoryListResponse } from "@/types";
 import { notFound } from "next/navigation";
 
 export default async function Home() {
 	const lastRes = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/api/stories?sort=createdBy&limit=10`
+		`${process.env.NEXT_PUBLIC_API_URL}/api/stories?sort=createdAt&order=desc&limit=10`
 	);
 
 	if (!lastRes.ok) return notFound();
 
-	const lastCreated: StoryWithAuthor[] = await lastRes.json();
+	const lastCreated: StoryListResponse = await lastRes.json();
 
 	const updatedRes = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/api/stories?sort=updatedBy&limit=10`
+		`${process.env.NEXT_PUBLIC_API_URL}/api/stories?sort=updatedAt&order=desc&limit=10`
 	);
 
 	if (!updatedRes.ok) return notFound();
 
-	const lastUpdated: StoryWithAuthor[] = await updatedRes.json();
+	const lastUpdated: StoryListResponse = await updatedRes.json();
 
 	return (
-		<div className="mx-[20vw] py-8 flex flex-col gap-6">
+		<div className="mx-[10vw] md:mx-[15vw] lg:mx-[20vw] py-8 flex flex-col gap-6">
 			<div className="flex flex-col gap-2">
 				<h3 className="font-bold text-2xl text-gray-900 dark:text-gray-200">
 					Son Yazılan Hikayeler
 				</h3>
 
 				<HorizontalScroll>
-					{lastCreated.map((story) => (
+					{lastCreated.stories.map((story) => (
 						<StoryCard
 							key={story._id}
 							id={story._id}
@@ -44,7 +43,7 @@ export default async function Home() {
 					Son Güncellenen Hikayeler
 				</h3>
 				<HorizontalScroll>
-					{lastUpdated.map((story) => (
+					{lastUpdated.stories.map((story) => (
 						<StoryCard
 							key={story._id}
 							id={story._id}
