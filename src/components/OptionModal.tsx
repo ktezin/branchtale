@@ -39,7 +39,7 @@ export default function OptionModal({
 				className="fixed inset-0 z-50 flex items-center justify-center"
 			>
 				<div className="fixed inset-0 bg-black/50" aria-hidden="true" />
-				<DialogPanel className="bg-white rounded-xl p-6 w-full max-w-md z-50">
+				<DialogPanel className="bg-white dark:bg-neutral-950 rounded-xl p-6 w-full max-w-md z-50">
 					<DialogTitle className="text-lg font-bold mb-4">
 						Seçenek Düzenle
 					</DialogTitle>
@@ -49,7 +49,7 @@ export default function OptionModal({
 						onChange={(e) => setText(e.target.value)}
 					/>
 					<div className="flex justify-end gap-2">
-						<button className="bg-gray-300 px-4 py-2 rounded" onClick={onClose}>
+						<button className="bg-gray-300 dark:bg-neutral-800 px-4 py-2 rounded" onClick={onClose}>
 							İptal
 						</button>
 						<button

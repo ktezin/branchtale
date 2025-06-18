@@ -1,7 +1,7 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
-import LogoutButton from "./LogoutButton";
+import LogoutButton from "../LogoutButton";
 
 type NavLink = {
 	text: string;

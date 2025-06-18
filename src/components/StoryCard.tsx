@@ -1,4 +1,13 @@
 import Link from "next/link";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "./ui/card";
+import Image from "next/image";
 
 export default function StoryCard({
 	id,
@@ -16,22 +25,27 @@ export default function StoryCard({
 	return (
 		<Link
 			href={`/stories/${id}`}
-			className="rounded-2xl shadow dark:bg-neutral-900 hover:shadow-lg dark:hover:dark:bg-neutral-950 dark:hover:border dark:shadow-lg dark:hover:shadow-white/5 transition p-4 flex flex-col min-w-[200px] sm:min-w-[250px]"
+			className="h-full"
 		>
-			{coverImage && (
-				<img
-					src={coverImage}
-					alt={title}
-					className="w-full h-40 object-cover rounded-xl mb-4"
-				/>
-			)}
-			<h3 className="text-lg font-semibold text-gray-800 dark:text-gray-300">
-				{title}
-			</h3>
-			{createdBy && <p className="text-sm text-gray-500">by {createdBy}</p>}
-			{description && (
-				<p className="mt-2 text-sm text-gray-600 line-clamp-3">{description}</p>
-			)}
+			<Card className="pt-0 h-full">
+				<CardContent className="p-0 w-[200px] h-[240px]">
+					<img
+						src={coverImage}
+						alt={title}
+						width={200}
+						height={240}
+						className="w-full h-full object-cover rounded-t-2xl"
+					/>
+				</CardContent>
+				<CardFooter>
+					<CardTitle>
+						{title}
+						{createdBy && (
+							<p className="text-sm text-gray-500">by {createdBy}</p>
+						)}
+					</CardTitle>
+				</CardFooter>
+			</Card>
 		</Link>
 	);
 }

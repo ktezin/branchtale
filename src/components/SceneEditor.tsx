@@ -158,7 +158,7 @@ export default function SceneEditor({
 				fitView
 			>
 				<MiniMap />
-				<Controls />
+				<Controls className="bg-red" />
 				<Background />
 			</ReactFlow>
 			{selectedNode && (
