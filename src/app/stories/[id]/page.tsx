@@ -1,4 +1,5 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import BookmarkButton from "@/components/story/BookmarkButton";
 import LikeButton from "@/components/story/LikeButton";
 import { Story } from "@/models/story.model";
 import { Types } from "mongoose";
@@ -33,7 +34,7 @@ export default async function StoryPage({
 				Oku
 			</Link>
 
-			<div className="h-12">
+			<div className="h-12 flex">
 				<LikeButton
 					storyId={story._id}
 					initialCount={story.likes.length}
@@ -45,6 +46,7 @@ export default async function StoryPage({
 							: false
 					}
 				/>
+				<BookmarkButton storyId={story._id} />
 			</div>
 		</main>
 	);

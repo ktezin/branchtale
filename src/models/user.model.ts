@@ -1,4 +1,4 @@
-import { Schema, model, models } from "mongoose";
+import { Schema, Types, model, models } from "mongoose";
 
 const UserSchema = new Schema({
 	username: { type: String, required: true, unique: true },
@@ -9,6 +9,7 @@ const UserSchema = new Schema({
 		enum: ["credentials", "google"],
 		required: true,
 	},
+	bookmarks: [{ type: Types.ObjectId, ref: "Story" }],
 });
 
 const User = models.User || model("User", UserSchema);
