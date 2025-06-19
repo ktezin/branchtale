@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
-import { ObjectId } from "bson";
 import StoryModel from "@/models/story.model";
 
 export async function GET(
@@ -16,9 +15,7 @@ export async function GET(
 			throw new Error("Database connection failed");
 		}
 
-		const story = await db
-			.collection("stories")
-			.findOne({ _id: new ObjectId(id) });
+		const story = await StoryModel.findById(id);
 
 		if (!story) {
 			return NextResponse.json({ error: "Hikaye bulunamadı" }, { status: 404 });

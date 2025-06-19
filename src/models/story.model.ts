@@ -1,4 +1,4 @@
-import { Schema, model, models } from "mongoose";
+import { Schema, Types, model, models } from "mongoose";
 
 export type Choice = {
 	optionText: string;
@@ -23,6 +23,7 @@ export type Story = {
 	startSceneId: string;
 	scenes: Scene[];
 	createdBy: Schema.Types.ObjectId | string;
+	likes: Types.ObjectId[];
 	createdAt: Date;
 	updatedAt: Date;
 };
@@ -55,6 +56,7 @@ const StorySchema = new Schema(
 		description: { type: String, required: true },
 		startSceneId: { type: String, required: true },
 		scenes: { type: [SceneSchema], required: true },
+		likes: { type: [Schema.Types.ObjectId], ref: "User", default: [] },
 		createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
 	},
 	{
