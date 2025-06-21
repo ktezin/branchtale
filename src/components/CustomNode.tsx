@@ -1,7 +1,7 @@
 import { SceneData } from "@/types";
-import { Handle, NodeProps, Position } from "@xyflow/react";
+import { Handle, Node, NodeProps, Position } from "@xyflow/react";
 
-export default function CustomNode({ data }: NodeProps<SceneData>) {
+export default function CustomNode({ data }: NodeProps<Node<SceneData>>) {
 	return (
 		<div className="rounded-lg bg-neutral-900 hover:bg-neutral-950 text-white border border-white p-2 shadow">
 			<Handle

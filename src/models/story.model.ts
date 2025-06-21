@@ -23,7 +23,7 @@ export type Story = {
 	startSceneId: string;
 	scenes: Scene[];
 	createdBy: Schema.Types.ObjectId | string;
-	likes: Types.ObjectId[];
+	likes?: Types.ObjectId[];
 	createdAt: Date;
 	updatedAt: Date;
 };

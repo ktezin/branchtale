@@ -1,19 +1,8 @@
 import { connectToDatabase } from "@/lib/mongodb";
 import StoryModel from "@/models/story.model";
 import { NextRequest, NextResponse } from "next/server";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { authOptions } from "@/lib/authOptions";
 import { getServerSession } from "next-auth";
-
-type Choice = {
-	text: string;
-	nextSceneId: string;
-};
-
-type Scene = {
-	id: string;
-	text: string;
-	choices: Choice[];
-};
 
 export async function GET(req: NextRequest) {
 	try {
@@ -29,7 +18,11 @@ export async function GET(req: NextRequest) {
 		const username = searchParams.get("username");
 		const category = searchParams.get("category");
 
-		const filter: any = {};
+		const filter: {
+			title?: { $regex: string; $options: string };
+			category?: string;
+			createdBy?: string;
+		} = {};
 
 		if (title) {
 			filter.title = { $regex: title, $options: "i" };

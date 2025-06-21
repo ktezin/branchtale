@@ -18,12 +18,12 @@ import "@xyflow/react/dist/style.css";
 import type { SceneData, SceneEdgeData } from "@/types";
 import OptionModal from "./OptionModal";
 import { saveStoryToDatabase, transformToScenes } from "@/lib/storyUtils";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import CustomNode from "./CustomNode";
 
 export type SceneEditorProps = {
-	initialNodes?: Node[];
-	initialEdges?: Edge[];
+	initialNodes?: Node<SceneData>[];
+	initialEdges?: Edge<SceneEdgeData>[];
 	storyId?: string;
 	storyTitle?: string;
 	storyDescription?: string;
@@ -37,7 +37,6 @@ export default function SceneEditor({
 	storyDescription,
 }: SceneEditorProps) {
 	const router = useRouter();
-	const params = useParams();
 
 	const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
 	const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -69,18 +68,18 @@ export default function SceneEditor({
 		[setEdges]
 	);
 
-	const onEdgeClick = (_: any, edge: Edge<SceneEdgeData>) => {
+	const onEdgeClick = (event: React.MouseEvent, edge: Edge<SceneEdgeData>) => {
 		setSelectedEdge(edge);
 		setEdgeModalOpen(true);
 	};
 
-	const onNodeClick = (_: any, node: Node) => {
+	const onNodeClick = (event: React.MouseEvent, node: Node) => {
 		setSelectedNode(node);
 		setModalOpen(true);
 	};
 
 	const addNode = () => {
-		const newNode: SceneData = {
+		const newNode: Node<SceneData> = {
 			id: crypto.randomUUID(),
 			type: "custom",
 			position: {
@@ -146,7 +145,7 @@ export default function SceneEditor({
 				</button>
 			</div>
 
-			<ReactFlow
+			<ReactFlow<Node<SceneData>, Edge<SceneEdgeData>>
 				nodes={nodes}
 				edges={edges}
 				onNodesChange={onNodesChange}

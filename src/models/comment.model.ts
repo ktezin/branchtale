@@ -1,6 +1,7 @@
 import { model, models, Schema, Types } from "mongoose";
 
 export type Comment = {
+	_id: Types.ObjectId;
 	storyId: Types.ObjectId;
 	userId: Types.ObjectId;
 	content: string;

@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import { BookmarkIcon, HeartIcon } from "@heroicons/react/24/outline";
+import { BookmarkIcon } from "@heroicons/react/24/outline";
+import { Story } from "@/models/story.model";
 
 export default function BookmarkButton({ storyId }: { storyId: string }) {
 	const [isBookmarked, setIsBookmarked] = useState(false);
@@ -12,7 +13,7 @@ export default function BookmarkButton({ storyId }: { storyId: string }) {
 			const res = await fetch("/api/users/bookmarks");
 			const data = await res.json();
 
-			if (data.bookmarks?.some((story: any) => story._id === storyId)) {
+			if (data.bookmarks?.some((story: Story) => story._id === storyId)) {
 				setIsBookmarked(true);
 			}
 		};

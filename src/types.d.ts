@@ -1,4 +1,3 @@
-import NextAuth from "next-auth";
 import { Story } from "@/models/story.model";
 
 declare module "next-auth" {
@@ -12,10 +11,10 @@ declare module "next-auth" {
 	}
 }
 
-export type SceneData = Node<{
-	label: string;
-	description: string;
-}>;
+export type SceneData = {
+  label: string;
+  description: string;
+};
 
 export type SceneEdgeData = {
 	optionText: string;

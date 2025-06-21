@@ -2,23 +2,18 @@ import Link from "next/link";
 import {
 	Card,
 	CardContent,
-	CardDescription,
 	CardFooter,
-	CardHeader,
 	CardTitle,
 } from "./ui/card";
-import Image from "next/image";
 
 export default function StoryCard({
 	id,
 	title,
-	description,
 	coverImage,
 	createdBy,
 }: {
 	id: string;
 	title: string;
-	description?: string;
 	coverImage?: string;
 	createdBy: string;
 }) {

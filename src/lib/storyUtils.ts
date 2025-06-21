@@ -74,14 +74,14 @@ export function transformToScenes(nodes: Node[], edges: Edge[]): Scene[] {
 	});
 }
 
-export function transformToStory(rawStory: any) {
-	const scenes: Scene[] = rawStory.scenes.map((scene: any, index: number) => ({
+export function transformToStory(rawStory: Story) {
+	const scenes: Scene[] = rawStory.scenes.map((scene: Scene, index: number) => ({
 		id: scene.id,
 		label: scene.label ?? `Sahne ${index + 1}`,
-		description: scene.description ?? scene.text ?? "",
+		description: scene.description ?? "",
 		position: scene.position ?? { x: 0, y: 0 },
-		choices: (scene.choices ?? []).map((choice: any) => ({
-			optionText: choice.optionText ?? choice.text,
+		choices: (scene.choices ?? []).map((choice: Choice) => ({
+			optionText: choice.optionText,
 			nextSceneId: choice.nextSceneId,
 		})),
 	}));

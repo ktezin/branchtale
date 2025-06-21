@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/authOptions";
 import { connectToDatabase } from "@/lib/mongodb";
 import UserModel from "@/models/user.model";
 import { ObjectId } from "mongodb";
+import { Types } from "mongoose";
 
 export async function POST(
 	request: NextRequest,
-	{ params }: { params: { id: string } }
+	{ params }: { params: Promise<{ id: string }> }
 ) {
 	try {
 		const session = await getServerSession(authOptions);
@@ -30,13 +31,13 @@ export async function POST(
 		}
 
 		const storyObjectId = new ObjectId(id);
-		const alreadyBookmarked = user.bookmarks?.some((id: any) =>
+		const alreadyBookmarked = user.bookmarks?.some((id: Types.ObjectId) =>
 			id.equals(storyObjectId)
 		);
 
 		if (alreadyBookmarked) {
 			user.bookmarks = user.bookmarks.filter(
-				(id: any) => !id.equals(storyObjectId)
+				(id: Types.ObjectId) => !id.equals(storyObjectId)
 			);
 		} else {
 			user.bookmarks = [...(user.bookmarks || []), storyObjectId];

@@ -1,8 +1,8 @@
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import { authOptions } from "../auth/[...nextauth]/route";
 import CommentModel, { Comment } from "@/models/comment.model";
 import { connectToDatabase } from "@/lib/mongodb";
+import { authOptions } from "@/lib/authOptions";
 
 export async function POST(req: NextRequest) {
 	const session = await getServerSession(authOptions);
