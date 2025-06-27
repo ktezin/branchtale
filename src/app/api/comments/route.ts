@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
 			{ status: 401 }
 		);
 
-	const { storyId, content }: Comment = await req.json();
+	const { storyId, content, parentComment }: Comment = await req.json();
 
 	if (!storyId || !content)
 		return NextResponse.json({ error: "Eksik veri" }, { status: 400 });
@@ -23,6 +23,7 @@ export async function POST(req: NextRequest) {
 		storyId,
 		userId: session.user.id,
 		content,
+		parentComment: parentComment || null,
 	});
 
 	return NextResponse.json(newComment, { status: 201 });
@@ -39,9 +40,31 @@ export async function GET(req: NextRequest) {
 
 	await connectToDatabase();
 
-	const comments = await CommentModel.find({ storyId })
+	const allComments = await CommentModel.find({ storyId })
 		.populate("userId", "username image")
-		.sort({ [sort]: order });
+		.sort({ [sort]: order })
+		.lean();
+		
+	const commentMap = new Map<string, Comment>();
+	const topLevelComments: Comment[] = [];
 
-	return NextResponse.json({ comments });
+	allComments.forEach((comment) => {
+		const typedComment = comment as unknown as Comment;
+		typedComment.replies = [];
+		commentMap.set(typedComment._id.toString(), typedComment);
+	});
+
+	allComments.forEach((comment: any) => {
+		const typedComment = commentMap.get(comment._id.toString()) as Comment;
+		if (comment.parentComment !== null && comment.parentComment !== undefined) {
+			const parent = commentMap.get(comment.parentComment.toString()) as
+				| Comment
+				| undefined;
+			if (parent && parent.replies) parent.replies.push(typedComment);
+		} else {
+			topLevelComments.push(typedComment);
+		}
+	});
+
+	return NextResponse.json({ comments: topLevelComments });
 }

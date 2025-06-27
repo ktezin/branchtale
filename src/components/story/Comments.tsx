@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "../ui/button";
-import { Textarea } from "../ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { Comment } from "@/models/comment.model";
-import { Card, CardContent } from "../ui/card";
+import CommentItem from "./CommentItem";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Comments({ storyId }: { storyId: string }) {
+	const [isLoading, setIsLoading] = useState(true);
 	const [comments, setComments] = useState([]);
 	const [newComment, setNewComment] = useState("");
 
@@ -14,6 +16,7 @@ export default function Comments({ storyId }: { storyId: string }) {
 		const res = await fetch(`/api/comments?storyId=${storyId}`);
 		const data = await res.json();
 		setComments(data.comments);
+		setIsLoading(false);
 	};
 
 	const handleSubmit = async () => {
@@ -46,20 +49,23 @@ export default function Comments({ storyId }: { storyId: string }) {
 			/>
 			<Button onClick={handleSubmit}>Gönder</Button>
 
-			{comments.length > 0 ? (
+			{isLoading ? (
+				<SkeletonComments />
+			) : comments.length > 0 ? (
 				comments.map((comment: Comment) => (
-					<Card key={comment._id.toString()} className="border p-3 rounded">
-						<CardContent>
-							<p className="text-sm text-gray-600">
-								@{comment.userId.toString()}
-							</p>
-							<p>{comment.content}</p>
-						</CardContent>
-					</Card>
+					<CommentItem key={comment._id.toString()} comment={comment} />
 				))
 			) : (
-				<p>Henüz yorum yapılmamış. <br /> İlk yazan sen ol.</p>
+				<p>
+					Henüz yorum yapılmamış. <br /> İlk yazan sen ol.
+				</p>
 			)}
 		</div>
 	);
+}
+
+function SkeletonComments() {
+	return [0, 1, 2].map((i) => (
+		<Skeleton key={i} className="h-28 w-full rounded-md" />
+	));
 }

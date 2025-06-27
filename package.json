@@ -12,6 +12,8 @@
     "@auth/mongodb-adapter": "^3.9.1",
     "@headlessui/react": "^2.2.4",
     "@heroicons/react": "^2.2.0",
+    "@radix-ui/react-collapsible": "^1.1.11",
+    "@radix-ui/react-popover": "^1.1.14",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tabs": "^1.1.12",
     "@tailwindcss/line-clamp": "^0.4.4",
