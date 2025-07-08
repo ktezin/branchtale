@@ -1,27 +1,12 @@
 "use client";
 
 import { Comment, CommentUser } from "@/models/comment.model";
-import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { formatTimeAgo } from "@/lib/utils";
-import {
-	Collapsible,
-	CollapsibleContent,
-	CollapsibleTrigger,
-} from "../ui/collapsible";
-import {
-	ChevronDownIcon,
-	ChevronUpDownIcon,
-	ChevronUpIcon,
-} from "@heroicons/react/24/outline";
-import { ChevronDown, ReplyIcon } from "lucide-react";
+import { ReplyIcon } from "lucide-react";
+import { toast } from "sonner";
 
 export default function CommentItem({
 	comment,
@@ -32,7 +17,6 @@ export default function CommentItem({
 	depth?: number;
 	maxDepth?: number;
 }) {
-	const [isOpen, setIsOpen] = useState(false);
 	const [isReplying, setIsReplying] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [newReply, setNewReply] = useState("");
@@ -63,9 +47,12 @@ export default function CommentItem({
 			const createdReply = await res.json();
 			setNewReply("");
 			setReplies((prev) => [...prev, createdReply]);
-			setIsOpen(true);
 		} catch (error) {
-			alert("Yanıtınız gönderilirken bir sorun oluştu");
+			toast(
+				error instanceof Error
+					? error.message
+					: "Yanıtınız gönderilirken bir sorun oluştu"
+			);
 		} finally {
 			setIsLoading(false);
 			setIsReplying(false);

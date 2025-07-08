@@ -42,27 +42,22 @@ export async function GET(req: NextRequest) {
 
 	const allComments = await CommentModel.find({ storyId })
 		.populate("userId", "username image")
-		.sort({ [sort]: order })
-		.lean();
-		
+		.sort({ [sort]: order });
+
 	const commentMap = new Map<string, Comment>();
 	const topLevelComments: Comment[] = [];
 
-	allComments.forEach((comment) => {
-		const typedComment = comment as unknown as Comment;
-		typedComment.replies = [];
-		commentMap.set(typedComment._id.toString(), typedComment);
+	allComments.forEach((comment: Comment) => {
+		comment.replies = [];
+		commentMap.set(comment._id.toString(), comment);
 	});
 
-	allComments.forEach((comment: any) => {
-		const typedComment = commentMap.get(comment._id.toString()) as Comment;
+	allComments.forEach((comment: Comment) => {
 		if (comment.parentComment !== null && comment.parentComment !== undefined) {
-			const parent = commentMap.get(comment.parentComment.toString()) as
-				| Comment
-				| undefined;
-			if (parent && parent.replies) parent.replies.push(typedComment);
+			const parent = commentMap.get(comment.parentComment.toString());
+			if (parent && parent.replies) parent.replies.push(comment);
 		} else {
-			topLevelComments.push(typedComment);
+			topLevelComments.push(comment);
 		}
 	});
 

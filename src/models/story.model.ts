@@ -16,7 +16,7 @@ export type Scene = {
 	choices: Choice[];
 };
 
-export type Story = {
+export type Story = BaseStory & {
 	_id: string;
 	title: string;
 	description: string;
@@ -24,6 +24,14 @@ export type Story = {
 	scenes: Scene[];
 	createdBy: Schema.Types.ObjectId | string;
 	likes?: Types.ObjectId[];
+	createdAt: Date;
+	updatedAt: Date;
+};
+
+export type BaseStory = {
+	_id: string;
+	title: string;
+	description: string;
 	createdAt: Date;
 	updatedAt: Date;
 };
